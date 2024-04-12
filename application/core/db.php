@@ -3,6 +3,7 @@ interface IDB{
 	public function getLink();
 	public function getCatalogTable();
 	public function getTagsTable();
+	public function getUsersTable();
 }
 class DB implements IDB{
 	private $link;
@@ -48,6 +49,128 @@ class DB implements IDB{
 		}
 		mysqli_close($this->link);
 		return $tags;
+	}
+	public function getUsersTable(){
+		$this->link=mysqli_connect(
+			$this->dbhost,
+			$this->dbuser,
+			$this->dbpassword,
+			$this->dbname
+		);
+		$users=[];
+		$result=mysqli_query($this->link,"select * from users");
+		while($row=mysqli_fetch_array($result)){
+			$users[]=[$row['email'],$row['login'],$row['pasw'],['id']];
+		}
+		mysqli_close($this->link);
+		return $users;
+	}
+	public function getMainBooksTable(){
+		$this->link=mysqli_connect(
+			$this->dbhost,
+			$this->dbuser,
+			$this->dbpassword,
+			$this->dbname
+		);
+		$books=[];
+		$result=mysqli_query($this->link,"select * from books inner join authors on books.author=authors.idauthors inner join tags on books.idtags=tags.idtags order by idbooks asc");
+		while($row=mysqli_fetch_array($result)){
+			$books[]=$row;
+		}
+		mysqli_close($this->link);
+		return $books;
+	}
+	public function getAuthorsTable(){
+		$this->link=mysqli_connect(
+			$this->dbhost,
+			$this->dbuser,
+			$this->dbpassword,
+			$this->dbname
+		);
+		$authors=[];
+		$result=mysqli_query($this->link,"select * from authors");
+		while($row=mysqli_fetch_array($result)){
+			$authors[]=$row;
+		}
+		mysqli_close($this->link);
+		return $authors;
+	}
+	public function getMainTagsTable(){
+		$this->link=mysqli_connect(
+			$this->dbhost,
+			$this->dbuser,
+			$this->dbpassword,
+			$this->dbname
+		);
+		$tags=[];
+		$result=mysqli_query($this->link,"select * from maintags");
+		while($row=mysqli_fetch_array($result)){
+			$tags[]=$row;
+		}
+		mysqli_close($this->link);
+		return $tags;
+	}
+	public function getBagTable(){
+		$this->link=mysqli_connect(
+			$this->dbhost,
+			$this->dbuser,
+			$this->dbpassword,
+			$this->dbname
+		);
+		$bag=[];
+		$result=mysqli_query($this->link,"select * from bag");
+		while($row=mysqli_fetch_array($result)){
+			$bag[]=$row;
+		}
+		mysqli_close($this->link);
+		return $bag;
+	}
+	public function insertBagTable($user,$book){
+		$this->link=mysqli_connect(
+			$this->dbhost,
+			$this->dbuser,
+			$this->dbpassword,
+			$this->dbname
+		);
+		$result=mysqli_query($this->link,"insert into bag (iduser,idbook) values ({$user},{$book})");
 
+		mysqli_close($this->link);
+	}
+	public function deleteFromBag($user,$book){
+		$this->link=mysqli_connect(
+			$this->dbhost,
+			$this->dbuser,
+			$this->dbpassword,
+			$this->dbname
+		);
+		$result=mysqli_query($this->link,"delete from bag where iduser={$user} and idbook={$book}");
+
+		mysqli_close($this->link);
+	}
+	public function addInBuy($user,$book){
+		$this->link=mysqli_connect(
+			$this->dbhost,
+			$this->dbuser,
+			$this->dbpassword,
+			$this->dbname
+		);
+		$result=mysqli_query($this->link,"insert into buy (iduser,idbook) values ({$user},{$book})");
+
+		mysqli_close($this->link);
+	}
+	public function getBuyTable(){
+		$this->link=mysqli_connect(
+			$this->dbhost,
+			$this->dbuser,
+			$this->dbpassword,
+			$this->dbname
+		);
+		$buy=[];
+		$result=mysqli_query($this->link,"select * from buy");
+		while($row=mysqli_fetch_array($result)){
+			$buy[]=$row;
+		}
+		mysqli_close($this->link);
+		return $buy;
 	}
 }

@@ -22,6 +22,10 @@ function createMenuBox(values){
 		elem3.appendChild(document.createTextNode(values[i][0]));
 		elem3.classList.toggle('divhov');
   		elem3.classList.toggle('txt');
+  		elem3.onclick=()=>{
+  			window.history.pushState('object or string','Title','/catalog?id='+values[i][2]);
+  			showMenu();
+  		};
   		elem2.appendChild(elem3);
   		if(i==3 && values.length>4){
   			elem3=document.createElement('div');
@@ -47,7 +51,7 @@ function createCloseButton(){
 	elem1.style.top='10px';
 	elem1.style.right='2%';
 	elem2=document.createElement('img');
-	elem2.src = 'resourses/images/close.png';
+	elem2.src = '/resourses/images/close.png';
 	elem2.classList.toggle('closeicon');
 	elem2.onclick=showMenu;
 	elem1.appendChild(elem2);
@@ -61,7 +65,7 @@ function addContent(){
 	elem1.id='menucontain';
 	document.getElementById('menuCat').appendChild(elem1);
 	let xml=new XMLHttpRequest();
-	xml.open('GET','ajax/menu');
+	xml.open('GET','index/menu');
 	xml.onreadystatechange = function(){
 		if (xml.readyState !== 4 || xml.status !== 200) {
    			return;
@@ -98,6 +102,10 @@ function createSubMenu(values){
 		elem1.classList.toggle('divhov');
 		elem1.classList.toggle('txt');
 		elem1.style.fontSize='15px';
+		elem1.onclick=()=>{
+			window.history.pushState('object or string','Title','/catalog?id='+values[i][2]);
+			showMenu();
+		};
 		elem2.appendChild(elem1);
 	}
 }
@@ -111,6 +119,22 @@ function createBackButton(){
 	return elem1;
 }
 
+function openProfile(){
+  	if(window.location.pathname != '/profile')	window.history.pushState('object or string','Title','/profile');
+}
+function openBag(){
+	if(window.location.pathname != '/bag')	window.history.pushState('object or string','Title','/bag');
+}
+function openSaved(){
+  	if(window.location.pathname != '/saved')	window.history.pushState('object or string','Title','/saved');
+}
+function openHome(){
+	if(window.location.pathname != '/')	window.history.pushState('object or string','Title','/');
+	else location.reload();
+}
+home.onclick=openHome;
+icon1.onclick=openProfile;
+icon2.onclick=openBag;
+icon3.onclick=openSaved;
 dropdown.onclick=showMenu;
 window.addEventListener('DOMContentLoaded',addContent);
-
