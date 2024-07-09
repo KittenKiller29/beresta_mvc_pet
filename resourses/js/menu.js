@@ -22,9 +22,15 @@ function createMenuBox(values){
 		elem3.appendChild(document.createTextNode(values[i][0]));
 		elem3.classList.toggle('divhov');
   		elem3.classList.toggle('txt');
+
   		elem3.onclick=()=>{
-  			window.history.pushState('object or string','Title','/catalog?id='+values[i][2]);
-  			showMenu();
+  			if(document.getElementById('menuCat').classList.contains('showmenu')){
+				showMenu();
+			}
+  			window.history.pushState('object or string','Title','/catalog?id='+values[i][2]);	
+			
+			
+		
   		};
   		elem2.appendChild(elem3);
   		if(i==3 && values.length>4){
@@ -103,8 +109,12 @@ function createSubMenu(values){
 		elem1.classList.toggle('txt');
 		elem1.style.fontSize='15px';
 		elem1.onclick=()=>{
+			if(document.getElementById('menuCat').classList.contains('showmenu')){
+				showMenu();
+			}
 			window.history.pushState('object or string','Title','/catalog?id='+values[i][2]);
-			showMenu();
+			
+			
 		};
 		elem2.appendChild(elem1);
 	}
@@ -119,7 +129,7 @@ function createBackButton(){
 	return elem1;
 }
 
-function openProfile(){
+function loadProfile(){
   	if(window.location.pathname != '/profile')	window.history.pushState('object or string','Title','/profile');
 }
 function openBag(){
@@ -132,9 +142,13 @@ function openHome(){
 	if(window.location.pathname != '/')	window.history.pushState('object or string','Title','/');
 	else location.reload();
 }
+function openSearch(){
+	window.history.pushState('object or string','Title','/search?name='+document.getElementById('searchers').value);
+}
 home.onclick=openHome;
-icon1.onclick=openProfile;
+icon1.onclick=loadProfile;
 icon2.onclick=openBag;
 icon3.onclick=openSaved;
 dropdown.onclick=showMenu;
+search.onclick=openSearch;
 window.addEventListener('DOMContentLoaded',addContent);

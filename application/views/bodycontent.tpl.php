@@ -34,9 +34,5 @@
 	</div>
 	<div class='vechsliderblock'  id='vechsliderblock6'>
 	</div>
-	<div class='headmain'>
-	Новые авторы
-	</div>
-	<div class='vechsliderblock'  id='vechsliderblock8'>
-	</div>
+	
 

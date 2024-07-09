@@ -12,6 +12,12 @@ class PaymentWindow{
 		let close=document.createElement('div');
 		close.classList.toggle('head');
 		let tmp=document.createElement('div');
+		tmp.style.position='relative';
+		tmp.style.width='100%';
+		tmp.style.display='flex';
+		tmp.style.justifyContent='right';
+		tmp.style.top='10px';
+		tmp.style.right='2%';
 		let closeicon=document.createElement('img');
 		closeicon.src = '/resourses/images/close.png';
 		closeicon.classList.toggle('closeicon');

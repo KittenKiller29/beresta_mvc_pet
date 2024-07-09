@@ -78,11 +78,16 @@ class Vech{
 				let elem3=document.createElement('img');
 				elem3.src=this.books[i][5];
 				
-				elem2.classList.toggle('vechimage');
-				elem2.style.backgroundImage="url("+this.books[i][5]+")";
-
-				elem1.style.width=((253*(parseInt(elem3.naturalWidth)/parseInt(elem3.naturalHeight)))).toString()+'px';
+				setTimeout(() => {
+  					elem2.classList.toggle('vechimage');
+					elem2.style.backgroundImage="url("+this.books[i][5]+")";
 				
+  					elem1.style.width=((253*(parseInt(elem3.naturalWidth)/parseInt(elem3.naturalHeight)))).toString()+'px';
+				
+				
+				
+  				
+					
 				elem2.onclick=()=>{
 					window.history.pushState('object or string','Title','/book?id='+this.books[i][0].toString());
 					 ///?id='+this.books[i][0].toString()
@@ -100,6 +105,11 @@ class Vech{
 				elem3.classList.toggle('vechauthor');
 				elem1.appendChild(elem3);
 				elem.appendChild(elem1);
+  
+				}, 50);
+				
+				
+					
 			}	
 			value.appendChild(elem);		
   		}
@@ -131,7 +141,7 @@ class VechReck{
 				let elem2=document.createElement('div');
 				let elem3=document.createElement('img');
 				elem3.src=this.books[i][5];
-				
+				setTimeout(() => {
 				elem2.classList.toggle('vechimage');
 				elem2.style.backgroundImage="url("+this.books[i][5]+")";
 
@@ -154,6 +164,7 @@ class VechReck{
 				elem3.classList.toggle('vechauthor');
 				elem1.appendChild(elem3);
 				elem.appendChild(elem1);
+			}, 50);
 			}	
 			value.appendChild(elem);		
   		}

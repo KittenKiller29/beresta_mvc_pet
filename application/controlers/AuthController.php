@@ -20,4 +20,10 @@
 			$this->model->startSession($data[0],$data[1]);
 			$this->view->auth($this->model->getSessionStatus());
 		}
+		public function createUser(){
+			$postData = file_get_contents('php://input');
+			$data = json_decode($postData, true);
+			$this->model->createUser($data);
+			$this->view->auth($this->model->getSessionStatus());
+		}
 	}

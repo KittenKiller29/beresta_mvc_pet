@@ -25,14 +25,27 @@
 				<div class='elem2'>
 					<div class='block'>
 						<div class='header'>
-							Еще нет аккаунта?
+							Регистрация
 						</div>
 						<div class='text'>
-							Самое время создать его! Тысячи книг в одном месте в удобном для вас формате, сохраняйте и читайте то, что вам по душе.
+							Email
 						</div>
+						<input type='text' class='inp' id='inp3' style="height: 30px;">
+						<div class='text'>
+							Телефон
+						</div>
+						<input type='text' class='inp' id='inp4' style="height: 30px;">
+						<div class='text'>
+							Логин
+						</div>
+						<input type='text' class='inp' id='inp5' style="height: 30px;">
+						<div class='text'>
+							Пароль
+						</div>
+						<input type='password' class='inp' id='inp6' style="height: 30px;">
 					</div>
-					<div class='btn' style="width: 80%; max-width: 200px;">
-						Регистрация
+					<div class='btn' id="reg" style="width: 80%; max-width: 200px;">
+						Создать
 					</div>
 				</div>
 			</div>

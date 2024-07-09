@@ -1,11 +1,11 @@
 
 function historyLoader(){
+	if(document.getElementById('menuCat').classList.contains('showmenu')){
+		showMenu();
+	}
 	switch(window.location.pathname){
 		case '/':
 			loadMain();
-			break;
-		case '/profile':
-			loadProfile();
 			break;
 		case '/bag':
 			loadBag();
@@ -18,6 +18,12 @@ function historyLoader(){
 			break;
 		case '/catalog':
 			loadCatalog();
+			break;
+		case '/search':
+			loadSearch();
+			break;
+		case '/profile':
+			loadProfile();
 			break;
 	}
 }
@@ -34,7 +40,7 @@ function loadSaved(){
   		}
   		else{
 			let elem = document.getElementById('box_contain');
-			//elem.style.minHeight='400px';
+			
 			clearBody();
 			let elem1=document.createElement('div');
 			elem1.appendChild(document.createTextNode('Купленные книги'));
@@ -49,14 +55,17 @@ function loadSaved(){
   				books=JSON.parse(xmll.responseText);
   				console.log(books);
   				for(let i=0;i<books.length;i++){
+  					let elem3=document.createElement('img');
+					elem3.src=books[i][3];
+
+					setTimeout(()=>{
   					elem1=document.createElement('div');
 					elem1.classList.toggle('bagelem');
 					elem1.id=i.toString()+'checked';
 					elem2=document.createElement('div');
 					elem2.classList.toggle('bookimage');
 					console.log(books[i][3]);
-					let elem3=document.createElement('img');
-					elem3.src=books[i][3];
+					
 
 					elem2.style.height=((150*(parseInt(elem3.naturalHeight)/parseInt(elem3.naturalWidth)))).toString()+'px';
 					elem1.style.minHeight=((170*(parseInt(elem3.naturalHeight)/parseInt(elem3.naturalWidth)))+10).toString()+'px';
@@ -104,12 +113,12 @@ function loadSaved(){
 
 
 					elem.appendChild(elem1);
-
+					},50);
 					
   				}
   				
 				
-
+  				setTimeout(()=>{
 				elem1=document.createElement('div');
 				elem1.classList.toggle('elem5');
 				elem1.appendChild(document.createTextNode('*Уважаемые покупатели, обращаем ваше внимание на следующий факт: Постановление Правительства РФ от 19.01.1998 N 55 (ред. от 30.05.2018) "Об утверждении Правил продажи отдельных видов товаров, перечня товаров длительного пользования, на которые не распространяется требование покупателя о безвозмездном предоставлении ему на период ремонта или замены аналогичного товара, и перечня непродовольственных товаров надлежащего качества, не подлежащих возврату или обмену" ПЕРЕЧЕНЬ НЕПРОДОВОЛЬСТВЕННЫХ ТОВАРОВ НАДЛЕЖАЩЕГО КАЧЕСТВА,НЕ ПОДЛЕЖАЩИХ ВОЗВРАТУ ИЛИ ОБМЕНУ НА АНАЛОГИЧНЫЙ ТОВАР ДРУГИХ РАЗМЕРА, ФОРМЫ, ГАБАРИТА, ФАСОНА,РАСЦВЕТКИ ИЛИ КОМПЛЕКТАЦИИ Непериодические издания (книги, брошюры, альбомы, картографические и нотные издания, листовые изоиздания, календари, буклеты, издания, воспроизведенные на технических носителях информации)'));
@@ -118,8 +127,7 @@ function loadSaved(){
 
 				elem.appendChild(elem1);
 				elem.style.minHeight='400px';
-				payment=new PaymentWindow();
-				payment.createWindow(elem);
+				},60);
 
 			}
 			xmll.send();		
@@ -143,15 +151,17 @@ function loadCatalog(){
 		elem1.appendChild(document.createTextNode('Каталог: '+books[0]));
 		elem1.classList.toggle('headmain');
 		elem.appendChild(elem1);
-		elem.style.minHeight='400px';
+		
 		elem1=document.createElement('div');
 		elem1.classList.toggle('catalog');
 		for(let i=3;i<books.length;i++){
+			let elem4=document.createElement('img');
+			elem4.src=books[i][5];
+			setTimeout(()=>{
 			elem2=document.createElement('div');
 			elem2.classList.toggle('elem');
 			let elem3=document.createElement('div');
-			let elem4=document.createElement('img');
-			elem4.src=books[i][5];
+
   			elem3.classList.toggle('bookimage');
 			elem3.style.backgroundImage="url("+books[i][5]+")";
 			
@@ -172,14 +182,19 @@ function loadCatalog(){
 			elem3.classList.toggle('header2');
 			elem2.appendChild(elem3);
 			elem1.appendChild(elem2);
+			},50);
+			
 		}
+		
 		elem.appendChild(elem1);
+		setTimeout(()=>{elem.style.minHeight='400px';},60);	
   	}
   	xml.send();
 }
 
 
 function loadBook(){
+	clearBody();
 	let xml=new XMLHttpRequest();
 	xml.open('GET','book/getBook'+window.location.search);
 	xml.onreadystatechange = function(){
@@ -189,7 +204,7 @@ function loadBook(){
   		this.books=(JSON.parse(xml.responseText));
   		console.log(this.books);
   		let elem = document.getElementById('box_contain');
-		clearBody();
+		
   		let elem1=document.createElement('div');
   		elem1.classList.toggle('bookinfo');
   		let elem2=document.createElement('img');
@@ -197,7 +212,10 @@ function loadBook(){
   		let elem3=document.createElement('div');
   		elem3.classList.toggle('bookimage');
 		elem3.style.backgroundImage="url("+this.books[0][5]+")";
-		elem3.style.height=((200*(parseInt(elem2.naturalHeight)/parseInt(elem2.naturalWidth)))).toString()+'px';
+		setTimeout(()=>{
+			elem3.style.height=((200*(parseInt(elem2.naturalHeight)/parseInt(elem2.naturalWidth)))).toString()+'px';
+		
+		
 
 		let elem4=document.createElement('div');
 		elem4.appendChild(elem3);
@@ -246,6 +264,14 @@ function loadBook(){
 		elem3=document.createElement('div');
 		elem3.classList.toggle('header2');
 		elem3.appendChild(document.createTextNode("Жанр: "+this.books[0][9]));
+		console.log(this.books);
+		elem3.onclick=()=>{
+			if(document.getElementById('menuCat').classList.contains('showmenu')){
+				showMenu();
+			}
+			window.history.pushState('object or string','Title','/catalog?id='+this.books[0][8]);
+			
+		};
 		elem2.appendChild(elem3);
 
 		elem3=document.createElement('div');
@@ -268,14 +294,14 @@ function loadBook(){
   		elem1.appendChild(document.createTextNode('Другие книги жанра'));
   		elem.appendChild(elem1);
 
-
   		elem1=document.createElement('div');
   		elem1.classList.toggle('vechsliderblock');
   		elem1.id='vechsliderblock1';
   		elem.appendChild(elem1);
+
   		new VechReck(this.books[0][8]).createVech(document.getElementById('vechsliderblock1'));
   		elem.style.minHeight='900px';
-
+  	},50);
 
 	}
 	xml.send();
@@ -298,17 +324,96 @@ function loadProfile(){
 			elem1.classList.toggle('headmain');
 			elem.appendChild(elem1);
 			elem.style.minHeight='400px';
+			let xmll=new XMLHttpRequest();
+			xmll.open('GET','profile/getInfo');
+			xmll.onreadystatechange = function(){
+				if (xmll.readyState !== 4 || xmll.status !== 200) {
+   					return;
+  				}
+  				let info=JSON.parse(xmll.responseText);
+  				console.log(info);
 
+  				elem1=document.createElement('div');
+  				elem1.classList.toggle('prof');
+  				let elem2=document.createElement('div');
+  				elem2.classList.toggle('elem13');
+
+
+  				let elem3=document.createElement('div');
+  				elem3.appendChild(document.createTextNode('Email: '+info[0][0]));
+  				elem2.appendChild(elem3);
+
+  				elem3=document.createElement('div');
+  				elem3.appendChild(document.createTextNode('Логин: '+info[0][1]));
+  				elem2.appendChild(elem3);
+
+  				elem3=document.createElement('div');
+  				elem3.appendChild(document.createTextNode('Телефон: '+info[0][4]));
+  				elem2.appendChild(elem3);
+
+  				elem1.appendChild(elem2);
+
+  				elem2=document.createElement('div');
+  				elem2.classList.toggle('elem13');
+
+
+  				elem3=document.createElement('div');
+  				elem3.appendChild(document.createTextNode('Книг в корзине: '+info[1]));
+  				elem2.appendChild(elem3);
+
+  				elem3=document.createElement('div');
+  				elem3.appendChild(document.createTextNode('Книг куплено: '+info[2]));
+  				elem2.appendChild(elem3);
+
+
+  				elem1.appendChild(elem2);
+
+
+  				elem2=document.createElement('div');
+  				elem2.classList.toggle('elem23');
+
+  				elem3=document.createElement('div');
+  				elem3.classList.toggle('bn');
+  				elem3.appendChild(document.createTextNode('Администратор'));
+  				elem2.appendChild(elem3);
+
+  				elem3=document.createElement('div');
+  				elem3.classList.toggle('dn');
+  				elem3.appendChild(document.createTextNode('Выход'));
+  				elem3.onclick=()=>{
+  					window.history.pushState('object or string','Title','/');
+  					let xmlt=new XMLHttpRequest();
+					xmlt.open('GET','profile/goout');
+					xml.onreadystatechange = function(){
+						if (xmlt.readyState !== 4 || xmlt.status !== 200) {
+   							return;
+  						}
+  					}
+  					xmlt.send();
+  				};
+
+
+
+  				elem2.appendChild(elem3);
+
+  				elem1.appendChild(elem2);
+
+  				elem.appendChild(elem1);
+
+
+  			};
+  			xmll.send();
 			
   		}
 	}
-	xml.send();
-	
+	xml.send();	
 }
 function loadMain(){
 	let elem = document.getElementById('box_contain');
 	//elem.style.minHeight='1200px';
+
 	clearBody();
+	elem.style.minHeight='1000px';
 	//let elem1=document.createElement('div');
 	//elem1.appendChild(document.createTextNode('Главная'));
 	//elem1.classList.toggle('headmain');
@@ -324,7 +429,7 @@ function loadMain(){
   		new Vech(2).createVech(document.getElementById('vechsliderblock2'));
   		new Vech(3).createVech(document.getElementById('vechsliderblock3'));
   		new Vech(6).createVech(document.getElementById('vechsliderblock6'));
-  		new Vech(8).createVech(document.getElementById('vechsliderblock8'));
+  		
   		
   		//document.body.innerHTML=xml.responseText;
 	}
@@ -361,15 +466,17 @@ function loadBag(){
   				}
   				books=JSON.parse(xmll.responseText);
   				for(let i=0;i<books.length;i++){
+  					let elem3=document.createElement('img');
+					elem3.src=books[i][3];
+					setTimeout(()=>{
   					elem1=document.createElement('div');
 					elem1.classList.toggle('bagelem');
 					elem1.id=i.toString()+'checked';
 					elem2=document.createElement('div');
 					elem2.classList.toggle('bookimage');
 					console.log(books[i][3]);
-					let elem3=document.createElement('img');
-					elem3.src=books[i][3];
-
+					
+					
 					elem2.style.height=((150*(parseInt(elem3.naturalHeight)/parseInt(elem3.naturalWidth)))).toString()+'px';
 					elem1.style.minHeight=((170*(parseInt(elem3.naturalHeight)/parseInt(elem3.naturalWidth)))).toString()+'px';
 					elem2.style.backgroundImage="url("+books[i][3]+")";
@@ -454,10 +561,12 @@ function loadBag(){
 
 
 					elem.appendChild(elem1);
+				},50);
 
 					
   				}
   				
+  				setTimeout(()=>{
 				elem1=document.createElement('div');
 				elem1.classList.toggle('bagelem');
 
@@ -513,8 +622,10 @@ function loadBag(){
 
 				elem.appendChild(elem1);
 				elem.style.minHeight='400px';
+
 				payment=new PaymentWindow();
 				payment.createWindow(elem);
+				},60);
 
 			}
 			xmll.send();		
@@ -524,8 +635,60 @@ function loadBag(){
 	
 	
 }
-function paymentWindow(books){
+function loadSearch(){
+	let xml=new XMLHttpRequest();
+	xml.open('GET','search/getBookSearch'+window.location.search);
+	xml.onreadystatechange = function(){
+		if (xml.readyState !== 4 || xml.status !== 200) {
+   			return;
+  		}
+  		let elem = document.getElementById('box_contain');
+		clearBody();
+		let books=JSON.parse(xml.responseText);
+		console.log(books);
+		let elem1=document.createElement('div');
+		elem1.appendChild(document.createTextNode('Поиск: '+books[0]));
+		elem1.classList.toggle('headmain');
+		elem.appendChild(elem1);
+		
+		elem1=document.createElement('div');
+		elem1.classList.toggle('catalog');
+		for(let i=1;i<books.length;i++){
+			let elem4=document.createElement('img');
+			elem4.src=books[i][5];
+			setTimeout(()=>{
+			elem2=document.createElement('div');
+			elem2.classList.toggle('elem');
+			let elem3=document.createElement('div');
 
+  			elem3.classList.toggle('bookimage');
+			elem3.style.backgroundImage="url("+books[i][5]+")";
+			
+			elem3.style.height=((180*(parseInt(elem4.naturalHeight)/parseInt(elem4.naturalWidth)))).toString()+'px';
+			elem3.style.width='180px';
+			
+			elem3.onclick=()=>{
+				window.history.pushState('object or string','Title','/book?id='+ escape(books[i][0].toString()));
+			};
+			elem2.appendChild(elem3);
+			console.log(elem3.naturalWidth);
+			elem3=document.createElement('div');
+			elem3.appendChild(document.createTextNode(books[i][1]));
+			elem3.classList.toggle('header1');
+			elem2.appendChild(elem3);
+			elem3=document.createElement('div');
+			elem3.appendChild(document.createTextNode(books[i][3]));
+			elem3.classList.toggle('header2');
+			elem2.appendChild(elem3);
+			elem1.appendChild(elem2);
+			},50);
+			
+		}
+		
+		elem.appendChild(elem1);
+		setTimeout(()=>{elem.style.minHeight='400px';},60);	
+  	}
+  	xml.send();
 }
 function clearBody(){
 	window.scrollTo(0,0);

@@ -60,10 +60,20 @@ class DB implements IDB{
 		$users=[];
 		$result=mysqli_query($this->link,"select * from users");
 		while($row=mysqli_fetch_array($result)){
-			$users[]=[$row['email'],$row['login'],$row['pasw'],['id']];
+			$users[]=[$row['email'],$row['login'],$row['pasw'],$row['id'],$row['phone']];
 		}
 		mysqli_close($this->link);
 		return $users;
+	}
+	public function insertUser($em,$log,$pas,$ph){
+		$this->link=mysqli_connect(
+			$this->dbhost,
+			$this->dbuser,
+			$this->dbpassword,
+			$this->dbname
+		);
+		$result=mysqli_query($this->link,"insert into users (email,login,pasw,phone) values ('$em','$log','$pas','$ph')");
+		mysqli_close($this->link);
 	}
 	public function getMainBooksTable(){
 		$this->link=mysqli_connect(
